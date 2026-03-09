@@ -1,1 +1,106 @@
+#include <stdio.h>
+#include <string.h>
 
+#define MAX_ITENS 10
+
+// Estrutura do item
+struct Item {
+    char nome[50];
+    char tipo[30];
+    int quantidade;
+};
+
+int main() {
+
+    struct Item mochila[MAX_ITENS];
+    int totalItens = 0;
+    int opcao;
+
+    do {
+        printf("\n===== MOCHILA DE SOBREVIVENCIA =====\n");
+        printf("1 - Adicionar item\n");
+        printf("2 - Remover item\n");
+        printf("3 - Listar itens\n");
+        printf("0 - Sair\n");
+        printf("Escolha uma opcao: ");
+        scanf("%d", &opcao);
+
+        switch(opcao) {
+
+            case 1:
+                if(totalItens < MAX_ITENS) {
+
+                    printf("Nome do item: ");
+                    scanf("%s", mochila[totalItens].nome);
+
+                    printf("Tipo do item: ");
+                    scanf("%s", mochila[totalItens].tipo);
+
+                    printf("Quantidade: ");
+                    scanf("%d", &mochila[totalItens].quantidade);
+
+                    totalItens++;
+
+                    printf("Item adicionado com sucesso!\n");
+                } else {
+                    printf("Mochila cheia! Nao e possivel adicionar mais itens.\n");
+                }
+                break;
+
+            case 2: {
+                char nomeRemover[50];
+                int encontrado = 0;
+
+                printf("Digite o nome do item para remover: ");
+                scanf("%s", nomeRemover);
+
+                for(int i = 0; i < totalItens; i++) {
+                    if(strcmp(mochila[i].nome, nomeRemover) == 0) {
+
+                        for(int j = i; j < totalItens - 1; j++) {
+                            mochila[j] = mochila[j + 1];
+                        }
+
+                        totalItens--;
+                        encontrado = 1;
+                        printf("Item removido com sucesso!\n");
+                        break;
+                    }
+                }
+
+                if(!encontrado) {
+                    printf("Item nao encontrado!\n");
+                }
+                break;
+            }
+
+            case 3:
+                printf("\n===== ITENS NA MOCHILA =====\n");
+
+                if(totalItens == 0) {
+                    printf("Nenhum item cadastrado.\n");
+                } else {
+                    printf("%-20s %-20s %-10s\n", "Nome", "Tipo", "Quantidade");
+                    printf("-------------------------------------------------\n");
+
+                    for(int i = 0; i < totalItens; i++) {
+                        printf("%-20s %-20s %-10d\n",
+                               mochila[i].nome,
+                               mochila[i].tipo,
+                               mochila[i].quantidade);
+                    }
+                }
+                break;
+
+            case 0:
+                printf("Encerrando sistema...\n");
+                break;
+
+            default:
+                printf("Opcao invalida!\n");
+        }
+
+    } while(opcao != 0);
+
+    return 0;
+}
